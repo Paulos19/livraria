@@ -17,6 +17,7 @@ model User {
   role          UserRole  @default(USER) // Added role field
   accounts      Account[]
   sessions      Session[]
+  Pedido        Pedido[]
 }
 
 model Account {
@@ -55,12 +56,33 @@ model VerificationToken {
 }
 
 model Livro {
-  id        String @default(uuid()) @unique
-  codigo    String? @unique
-  livro     String?
-  autor     String?
-  valor     String?
-  categoria String?
+  id            String   @id @unique @default(uuid())
+  codigo        String?  @unique
+  livro         String? // Título
+  autor         String?
+  editora       String?
+  anoPublicacao Int?
+  isbn          String?  @unique
+  sinopse       String?  @db.Text // Para descrição longa
+  idioma        String?
+  numeroPaginas Int?
+  formato       String? // Ex: "Capa Comum", "eBook"
+  imagemCapa    String?
+  valor         String? // Ou Decimal
+  categoria     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Pedido {
+  id        String   @id @default(uuid())
+  userId    String? // Opcional, para relacionar com usuário
+  user      User?    @relation(fields: [userId], references: [id])
+  status    String // Ex: "RESERVADO", "PAGO", "ENVIADO", "CANCELADO"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // itens PedidoItem[] // Para múltiplos itens por pedido
+  // valorTotal Decimal?
 }
 
 // Enum para UserRole
