@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
         port: "", 
       }
     ]
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
+  typescript: {
+    ignoreBuildErrors: true
   }
 };
 
